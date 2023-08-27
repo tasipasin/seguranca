@@ -1,0 +1,13 @@
+{
+  "bracketSameLine": true,
+  "arrowParens": "avoid",
+  "overrides": [
+    {
+      "files": "*.java",
+      "options": {
+        "semi": true,
+        "bracketSpacing": false
+      }
+    }
+  ]
+}

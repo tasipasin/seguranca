@@ -4,11 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tasi.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="282.0" prefWidth="341.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tasi.LoginController">
     <children>
-        <Button fx:id="loginBtn" layoutX="128.0" layoutY="140.0" onAction="#btnClickAction" text="Login" />
-      <TextField fx:id="usrTextField" layoutX="44.0" layoutY="47.0" />
-      <PasswordField fx:id="pswTextField" layoutX="44.0" layoutY="100.0" />
-      <Label fx:id="errorLabel" layoutX="146.0" layoutY="169.0" text="Label" />
+        <Button fx:id="loginBtn" layoutX="96.0" layoutY="152.0" onAction="#btnClickAction" text="Login" />
+      <TextField fx:id="usrTextField" layoutX="96.0" layoutY="62.0" />
+      <PasswordField fx:id="pswTextField" layoutX="96.0" layoutY="115.0" />
+      <Label fx:id="errorLabel" contentDisplay="CENTER" layoutX="60.0" layoutY="177.0" prefHeight="59.0" prefWidth="222.0" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
+      <Label layoutX="96.0" layoutY="45.0" text="Usuario" />
+      <Label layoutX="96.0" layoutY="98.0" text="Senha" />
+      <Button fx:id="resetBtn" layoutX="14.0" layoutY="20.0" onAction="#btnResetAction" text="Reset" />
     </children>
 </AnchorPane>

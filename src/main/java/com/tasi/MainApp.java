@@ -1,12 +1,11 @@
 package com.tasi;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 
 public class MainApp extends Application {
@@ -30,6 +29,7 @@ public class MainApp extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
+        
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("/fxml/"+fxml + ".fxml"));
         return fxmlLoader.load();
     }
