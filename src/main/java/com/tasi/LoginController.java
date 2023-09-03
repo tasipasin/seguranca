@@ -2,7 +2,10 @@
 package com.tasi;
 
 import com.tasi.user.User;
+import com.tasi.utils.ValidationUtils;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +15,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * Classe de Controle da Tela de Login.
+ */
 public class LoginController implements Initializable {
 
     /** Campo de nome de Usuário. */
@@ -29,26 +35,37 @@ public class LoginController implements Initializable {
     /** Label de mensagem de erro. */
     @FXML
     private Label errorLabel;
-
     /** Controles de falha de login. */
-    private Integer cont = 1;
-    private boolean accountBlocked = false;
     private static final Integer MAX_ATTEMPTS = 5;
+    /** Mapeamento da quantidade de tentativas de login por usuário. */
+    private final Map<Integer, Integer> attemptsMap = new HashMap<>();
 
+    /**
+     * Ação executada ao clicar no botão de login.
+     * @param event Evento disparado pelo botão.
+     */
     @FXML
     private void btnClickAction(ActionEvent event) {
-        // TODO: realizar verificação por usuário
         String message = "Campo de usuário não pode estar vazio";
-        if (null != usrTextField.getText() && !usrTextField.getText().trim().isEmpty()) {
-            User user = new User(usrTextField.getText(), pswTextField.getText());
-            if (!accountBlocked) {
-                if (user.checkLogin()) {
+        // Recupera o usuário inserido no campo
+        String insertedUser = usrTextField.getText();
+        if (ValidationUtils.isNotEmpty(insertedUser)) {
+            User usr = User.userExists(insertedUser);
+            if (null == usr.getId()) {
+                // Exibe mensagem de usuário não existente
+                message = "Usuário não existe";
+            } else if (!usr.isActive() || this.attemptsMap.getOrDefault(usr.getId(), 0) >= MAX_ATTEMPTS) {
+                // Exibe mensagem de usuário não ativo
+                message = "Conta bloqueada! Muitas tentativas erradas.";
+            } else {
+                String insertedPsw = pswTextField.getText();
+                if (User.checkLogin(usr.getName(), insertedPsw)) {
                     message = "Usuário logado.";
                 } else {
-                    message = String.format("Login ou senha incorretos. Tentativas restantes %d", MAX_ATTEMPTS - cont);
-                    cont += 1;
-                    if (cont > 5) {
-                        accountBlocked = true;
+                    Integer attempts = updateAttemptsMap(usr.getId());
+                    message = String.format("Login ou senha incorretos. Tentativas restantes %d",
+                            MAX_ATTEMPTS - attempts);
+                    if (attempts > 5) {
                         message = "Conta bloqueada! Muitas tentativas erradas.";
                     }
                 }
@@ -57,15 +74,25 @@ public class LoginController implements Initializable {
         errorLabel.setText(message);
     }
 
+    /**
+     * Atualiza a quantidade de tentativas do usuário.
+     * @param userId Identificador do usuário.
+     * @return quantidade de tentativas do usuário.
+     */
+    private Integer updateAttemptsMap(Integer userId) {
+        Integer currAttempts = this.attemptsMap.getOrDefault(userId, 0) + 1;
+        this.attemptsMap.put(userId, currAttempts);
+        return currAttempts;
+    }
+
     @FXML
     private void btnResetAction(ActionEvent event) {
-        cont = 1;
-        accountBlocked = false;
+        attemptsMap.clear();
         errorLabel.setText("");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        // do nothing
     }
 }
