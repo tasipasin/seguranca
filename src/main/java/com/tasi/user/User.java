@@ -19,7 +19,7 @@ public class User {
     private static final String QUERY_SELECT_USER_EXISTS = QUERY_SELECT_USER + " WHERE user_name = '%s'";
     /** Query de seleção de usuário utilizando a senha criptografada. */
     private static final String QUERY_SELECT_USER_PSW = QUERY_SELECT_USER_EXISTS
-            + " WHERE user_name = '%s' AND user_password = '%s'";
+            + " AND user_password = '%s'";
     /** Campo de Identificador do usuário. */
     private Integer id;
     /** Campo de nome do usuário. */
